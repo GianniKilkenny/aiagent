@@ -1,6 +1,29 @@
 import os
 import subprocess
 
+schema_run_python_file = {
+    "type" : "function",
+        "function" : {
+            "name" : "run_python_file",
+            "description" : "Allows LLM to run python code within in designated working file",
+            "parameters" : {
+                "type" : "object",
+                "properties" : {
+                    "file_path" :{
+                    "type" : "string",
+                    "description" : "a string of the file path relative to the working directory",},
+            },
+        },
+    },
+}
+
+
+
+
+
+
+
+
 def run_python_file(
     working_directory: str, file_path: str, args: list[str] | None = None
 ) -> str:

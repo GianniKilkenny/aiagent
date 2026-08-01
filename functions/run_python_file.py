@@ -10,9 +10,15 @@ schema_run_python_file = {
                 "type" : "object",
                 "properties" : {
                     "file_path" :{
-                    "type" : "string",
-                    "description" : "a string of the file path relative to the working directory",},
+                        "type" : "string",
+                        "description" : "a string of the file path relative to the working directory",
+                    },
+                    "args" : {
+                        "type" : "array",
+                        "description" : "Optional command line arguements for script"
+                    }
             },
+            "required" : ["file_path"],
         },
     },
 }

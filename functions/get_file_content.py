@@ -9,11 +9,12 @@ schema_get_file_content = {
             "parameters" :{
                 "type" : "object",
                 "properties" : {
-                    "directory" : {
+                    "file_path" : {
                         "type" : "string",
                         "description" : "a string of the file path relative to the working directory",
                 },
             },
+            "required" : ["file_path"],
         },
     },
 }

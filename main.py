@@ -3,8 +3,8 @@ import os
 from prompts import system_prompt
 from dotenv import load_dotenv
 from openai import OpenAI
-from call_function import available_functions
 import json
+from call_function import available_functions, call_function
 
 
 def main():
@@ -43,17 +43,27 @@ def generate_content(client: OpenAI, messages:list, verbose: bool):
     )
     if response.usage is None:
         raise RuntimeError("There is an error with the API's response usage")
+
+    message = response.choices[0].message
+    
     if verbose:
         print("Prompt tokens:", response.usage.prompt_tokens)
         print("Response tokens:", response.usage.completion_tokens)
 
-    message = response.choices[0].message
-    if message.tool_calls:
-        for tool_call in message.tool_calls:
-            function_args = json.loads(tool_call.function.arguments or "{}")
-            print(f"Calling function: {tool_call.function.name}({function_args})")
-    print("Response:")
-    print(message.content)
+    if not message.tool_calls:
+        print("Response:")
+        print(message.content)
+        return
+
+    for tool_call in message.tool_calls:
+        result_message = call_function(tool_call, verbose)
+        if not result_message.get('content'):
+            raise RuntimeError(f"Empty function response for {tool_call.function.name}") 
+        if verbose:
+                print(f"-> {result_message['content']}")
+        else:
+                print("Response:")
+                print(result_message)
 
 
 

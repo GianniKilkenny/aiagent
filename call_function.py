@@ -44,11 +44,11 @@ def call_function(tool_call, verbose: bool=False) -> dict:
             "tool_call_id": tool_call.id,
             "content": f"Error: Unknown function: {function_name}",
             }
-    else:
-        function_args["working_directory"] = WORKING_DIR
-        result = function_map[function_name](**function_args)
+    
+    function_args["working_directory"] = WORKING_DIR
+    result = function_map[function_name](**function_args)
 
-        return {
+    return {
             "role" : "tool",
             "tool_call_id" : tool_call.id,
             "content" : result
